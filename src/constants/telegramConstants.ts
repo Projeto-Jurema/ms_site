@@ -13,7 +13,14 @@ export const questions = [
     text: 'De que espécie ele é?',
     id: 1,
     query: 'species',
-    allowedAnswers: ['cachorro', 'gato', 'pássaro'],
+    allowedAnswers: [
+      'cachorro',
+      'gato',
+      'pássaro',
+      'equino',
+      'bovino',
+      'animal silvestre',
+    ],
   },
   {
     type: 'text',
@@ -72,7 +79,8 @@ interface ConstantsResponseForms extends SendResponseForms {
 }
 
 export const texts = {
-  result: (link: string) => `Obrigado por responder! Link aqui: ${link}`,
+  result: (link: string, animalId: number) =>
+    `Obrigado por responder! Link aqui: ${link}, com o id: ${animalId}`,
   helloCreators: (firstName: string) =>
     `Olá ${firstName}, tudo bem?\n\nPara me usar, você pode executar os seguintes comandos:\n\n/start: reinicia o bot\n/new: adicionar um novo animal ao site\n/cancel: cancela o animal que está sendo adicionado\n/help: tirar dúvidas do bot\n\nUse com moderação.`,
   helloHenrique: `Olá Henrique, tudo bem?\n\nEu sou o bot do Projeto Jurema e por aqui você poderá adicionar novos animais ao nosso site.\n\nPara me usar, você pode executar os seguintes comandos:\n\n/start: reinicia o bot\n/new: adicionar um novo animal ao site\n/cancel: cancela o animal que está sendo adicionado\n/help: tirar dúvidas do bot\n\nSe você tiver alguma dúvida, pode dizer para o ${MATEUS_USERNAME} ou para o ${JOAO_USERNAME}`,
@@ -80,6 +88,11 @@ export const texts = {
   unauthorized: `Olá, tudo bem?\n\nCaso você queira saber mais sobre nós, precisa ir para o site oficial do Projeto Jurema.\n\nBasta clicar no link abaixo👇\n\n${SITE_BASE_URL}`,
   invalid: 'Tipo inválido',
   imageError: 'Erro ao subir imagem',
+  canceled: 'Cadastro de animal cancelado!',
+  list: 'Lista de animais:',
+  deleted: 'Animal deletado!',
+  nonSpecified:
+    'Nenhum animal foi especificado, use por exemplo:\n\n/delete 1230',
   newResponseForms: ({
     name,
     today,

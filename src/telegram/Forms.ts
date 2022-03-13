@@ -3,6 +3,7 @@ import { Message } from 'node-telegram-bot-api'
 import { chats, Question } from '.'
 import bitly from '../config/bitly'
 import bot from '../config/bot'
+import prisma from '../config/prisma'
 import { texts } from '../constants/telegramConstants'
 import upload from './upload'
 
@@ -14,11 +15,22 @@ class Forms {
     public link: URL
   ) {}
 
+  async saveInDb({ animalLink }: { animalLink: string }) {
+    return prisma.animals.create({ data: { animalLink } })
+  }
+
   async sendNextQuestion() {
     if (!this.currentQuestion?.text) {
+      const animalInstance = await this.saveInDb({
+        animalLink: encodeURI(this.link.toString()),
+      })
+
       const shortenUrl = await bitly.shorten(this.link.toString())
 
-      bot.sendMessage(this.msg.chat.id, texts.result(shortenUrl.link))
+      bot.sendMessage(
+        this.msg.chat.id,
+        texts.result(shortenUrl.link, animalInstance.id)
+      )
 
       return delete chats[this.msg.chat.id]
     }

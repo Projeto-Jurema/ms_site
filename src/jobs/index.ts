@@ -1,5 +1,6 @@
 import { ListObjectsOutput, Object } from 'aws-sdk/clients/s3'
 import cron from 'node-cron'
+import prisma from '../config/prisma'
 import S3 from '../config/s3'
 import { logger } from '../services'
 
@@ -31,8 +32,20 @@ const deleteOldFiles = (files: Object[] | undefined) => {
   })
 }
 
+const deleteIndexes = async () => {
+  const now = new Date()
+  const treeMonthsInMilliseconds = 1000 * 60 * 60 * 24 * 30 * 3
+  const threeMonthsAgo = new Date(now.getTime() - treeMonthsInMilliseconds)
+
+  await prisma.animals.deleteMany({
+    where: { createdAt: { lt: threeMonthsAgo } },
+  })
+}
+
 cron.schedule('0 6 * * *', () => {
   logger.info('Running job delete old files')
+
+  deleteIndexes()
 
   const bucketParams = {
     Bucket: AWS_S3_BUCKET as string,

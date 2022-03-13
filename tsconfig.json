@@ -7,7 +7,9 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": ["dom.iterable"],
+    "downlevelIteration": true
   },
   "exclude": [
     "node_modules",
