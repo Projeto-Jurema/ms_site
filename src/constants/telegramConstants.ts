@@ -48,7 +48,7 @@ export const questions = [
     text: 'Qual a personalidade dele?',
     id: 5,
     query: 'personality',
-    allowedAnswers: ['calmo', 'agitado', 'curioso', 'etc'],
+    allowedAnswers: ['calmo', 'agitado', 'curioso'],
   },
   {
     type: 'text',
