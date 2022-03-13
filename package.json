@@ -16,6 +16,7 @@
     "dotenv": "16.0.0",
     "errors-stack": "1.0.15",
     "express": "4.17.2",
+    "newrelic": "^8.8.0",
     "node-cron": "3.0.0",
     "node-telegram-bot-api": "0.56.0",
     "qrcode-pix": "4.0.1"
