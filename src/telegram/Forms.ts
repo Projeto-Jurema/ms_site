@@ -5,6 +5,7 @@ import bitly from '../config/bitly'
 import bot from '../config/bot'
 import prisma from '../config/prisma'
 import { texts } from '../constants/telegramConstants'
+import { logger } from '../services'
 import upload from './upload'
 
 class Forms {
@@ -16,10 +17,14 @@ class Forms {
   ) {}
 
   async saveInDb({ animalLink }: { animalLink: string }) {
+    logger.info('[saveInDb] Saving new animal')
+
     return prisma.animals.create({ data: { animalLink } })
   }
 
   async sendNextQuestion() {
+    logger.info(`[sendNextQuestion][${logger.beautify(this.currentQuestion)}]`)
+
     if (!this.currentQuestion?.text) {
       const animalInstance = await this.saveInDb({
         animalLink: encodeURI(this.link.toString()),
@@ -55,12 +60,18 @@ class Forms {
   }
 
   jumpToNextQuestion() {
+    logger.info(`[jumpToNextQuestion] jumping to the next question`)
+
     this.currentQuestion = this.questions[this.currentQuestion.id + 1]
 
     this.sendNextQuestion()
   }
 
   async saveAsImage(msg: Message) {
+    logger.info(
+      `[saveAsImage][${msg.chat.id}] Saving image in S3 and appending to the link`
+    )
+
     if (!msg.photo?.length) {
       return bot.sendMessage(this.msg.chat.id, texts.invalid)
     }
@@ -73,6 +84,10 @@ class Forms {
   }
 
   saveAsText(msg: Message) {
+    logger.info(
+      `[saveAsText][${msg.chat.id}] Saving text and appending to the link`
+    )
+
     if (!msg.text) return bot.sendMessage(this.msg.chat.id, texts.invalid)
 
     this.link.searchParams.append(this.currentQuestion.query, msg.text)
@@ -81,6 +96,8 @@ class Forms {
   }
 
   saveAnswer(msg: Message) {
+    logger.info(`[saveAnswer][${msg.chat.id}] Saving answer`)
+
     const lowerCaseMessage = msg.text?.toLocaleLowerCase()
     const isAllowAll = this.currentQuestion.allowedAnswers?.includes('*')
 

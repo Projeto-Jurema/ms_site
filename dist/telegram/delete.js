@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAnimal = void 0;
 var bot_1 = __importDefault(require("../config/bot"));
 var telegramConstants_1 = require("../constants/telegramConstants");
+var services_1 = require("../services");
 var animals_1 = require("../services/animals");
 var deleteAnimal = function (msg) { return __awaiter(void 0, void 0, void 0, function () {
     var chatId, params;
@@ -49,6 +50,7 @@ var deleteAnimal = function (msg) { return __awaiter(void 0, void 0, void 0, fun
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
+                services_1.logger.info("[".concat(msg.chat.id, "][").concat(msg.text, "] Delete new animal"));
                 chatId = msg.chat.id;
                 params = (_a = msg.text) === null || _a === void 0 ? void 0 : _a.replace(/\/delete/, '').trim();
                 if (!params || isNaN(parseFloat(params))) {

@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.chats = void 0;
 var bot_1 = __importDefault(require("../config/bot"));
 var telegramConstants_1 = require("../constants/telegramConstants");
+var services_1 = require("../services");
 var delete_1 = require("./delete");
 var listAnimals_1 = require("./listAnimals");
 var newAnimal_1 = __importDefault(require("./newAnimal"));
@@ -53,12 +54,15 @@ bot_1.default.on('message', function (msg) { return __awaiter(void 0, void 0, vo
     var _a, _b;
     return __generator(this, function (_c) {
         chatId = msg.chat.id;
+        services_1.logger.info("[".concat(chatId, "][").concat(msg.text, "] Received message"));
         if (![JOAO_CHAT_ID, MATEUS_CHAT_ID, HENRIQUE_CHAT_ID].includes((_b = (_a = msg.chat.id).toString) === null || _b === void 0 ? void 0 : _b.call(_a))) {
+            services_1.logger.warn("[".concat(chatId, "][").concat(msg.text, "] Unauthorized chat"));
             return [2 /*return*/, bot_1.default.sendMessage(chatId, telegramConstants_1.texts.unauthorized)];
         }
         if (msg.text && /\/start/.test(msg.text))
             return [2 /*return*/, (0, start_1.default)(msg)];
         if (msg.text && /\/cancel/.test(msg.text)) {
+            services_1.logger.info("[".concat(chatId, "][").concat(msg.text, "] Canceling creating new animal"));
             bot_1.default.sendMessage(msg.chat.id, telegramConstants_1.texts.canceled);
             return [2 /*return*/, delete exports.chats[chatId]];
         }

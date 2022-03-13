@@ -42,12 +42,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.listAnimals = void 0;
 var bot_1 = __importDefault(require("../config/bot"));
 var telegramConstants_1 = require("../constants/telegramConstants");
+var services_1 = require("../services");
 var animals_1 = require("../services/animals");
 var listAnimals = function (msg) { return __awaiter(void 0, void 0, void 0, function () {
     var chatId, text, animals, opts;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                services_1.logger.info("[".concat(msg.chat.id, "][").concat(msg.text, "] List animals"));
                 chatId = msg.chat.id;
                 text = telegramConstants_1.texts.list;
                 return [4 /*yield*/, (0, animals_1.getAnimals)()];

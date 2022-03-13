@@ -1,6 +1,7 @@
 import { SendResponseForms } from '.'
 import bot from '../config/bot'
 import { texts } from '../constants/telegramConstants'
+import { logger } from '../services'
 
 const { HENRIQUE_CHAT_ID } = process.env
 
@@ -12,6 +13,17 @@ const sendFormsResponseMessage = async ({
   animalLink,
   phone,
 }: SendResponseForms) => {
+  logger.info(
+    `[sendFormsResponseMessage] new interested people ${logger.beautify({
+      name,
+      email,
+      city,
+      about,
+      animalLink,
+      phone,
+    })}`
+  )
+
   const today = new Date().toISOString()
 
   const text = texts.newResponseForms({

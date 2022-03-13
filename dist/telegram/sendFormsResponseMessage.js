@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var bot_1 = __importDefault(require("../config/bot"));
 var telegramConstants_1 = require("../constants/telegramConstants");
+var services_1 = require("../services");
 var HENRIQUE_CHAT_ID = process.env.HENRIQUE_CHAT_ID;
 var sendFormsResponseMessage = function (_a) {
     var name = _a.name, email = _a.email, city = _a.city, about = _a.about, animalLink = _a.animalLink, phone = _a.phone;
@@ -49,6 +50,14 @@ var sendFormsResponseMessage = function (_a) {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    services_1.logger.info("[sendFormsResponseMessage] new interested people ".concat(services_1.logger.beautify({
+                        name: name,
+                        email: email,
+                        city: city,
+                        about: about,
+                        animalLink: animalLink,
+                        phone: phone,
+                    })));
                     today = new Date().toISOString();
                     text = telegramConstants_1.texts.newResponseForms({
                         name: name,

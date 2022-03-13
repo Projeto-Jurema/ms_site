@@ -44,6 +44,7 @@ var bitly_1 = __importDefault(require("../config/bitly"));
 var bot_1 = __importDefault(require("../config/bot"));
 var prisma_1 = __importDefault(require("../config/prisma"));
 var telegramConstants_1 = require("../constants/telegramConstants");
+var services_1 = require("../services");
 var upload_1 = __importDefault(require("./upload"));
 var Forms = /** @class */ (function () {
     function Forms(questions, currentQuestion, msg, link) {
@@ -56,6 +57,7 @@ var Forms = /** @class */ (function () {
         var animalLink = _a.animalLink;
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_b) {
+                services_1.logger.info('[saveInDb] Saving new animal');
                 return [2 /*return*/, prisma_1.default.animals.create({ data: { animalLink: animalLink } })];
             });
         });
@@ -67,6 +69,7 @@ var Forms = /** @class */ (function () {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
+                        services_1.logger.info("[sendNextQuestion][".concat(services_1.logger.beautify(this.currentQuestion), "]"));
                         if (!!((_a = this.currentQuestion) === null || _a === void 0 ? void 0 : _a.text)) return [3 /*break*/, 3];
                         return [4 /*yield*/, this.saveInDb({
                                 animalLink: encodeURI(this.link.toString()),
@@ -98,6 +101,7 @@ var Forms = /** @class */ (function () {
         });
     };
     Forms.prototype.jumpToNextQuestion = function () {
+        services_1.logger.info("[jumpToNextQuestion] jumping to the next question");
         this.currentQuestion = this.questions[this.currentQuestion.id + 1];
         this.sendNextQuestion();
     };
@@ -108,6 +112,7 @@ var Forms = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
+                        services_1.logger.info("[saveAsImage][".concat(msg.chat.id, "] Saving image in S3 and appending to the link"));
                         if (!((_a = msg.photo) === null || _a === void 0 ? void 0 : _a.length)) {
                             return [2 /*return*/, bot_1.default.sendMessage(this.msg.chat.id, telegramConstants_1.texts.invalid)];
                         }
@@ -122,6 +127,7 @@ var Forms = /** @class */ (function () {
         });
     };
     Forms.prototype.saveAsText = function (msg) {
+        services_1.logger.info("[saveAsText][".concat(msg.chat.id, "] Saving text and appending to the link"));
         if (!msg.text)
             return bot_1.default.sendMessage(this.msg.chat.id, telegramConstants_1.texts.invalid);
         this.link.searchParams.append(this.currentQuestion.query, msg.text);
@@ -129,6 +135,7 @@ var Forms = /** @class */ (function () {
     };
     Forms.prototype.saveAnswer = function (msg) {
         var _a, _b, _c;
+        services_1.logger.info("[saveAnswer][".concat(msg.chat.id, "] Saving answer"));
         var lowerCaseMessage = (_a = msg.text) === null || _a === void 0 ? void 0 : _a.toLocaleLowerCase();
         var isAllowAll = (_b = this.currentQuestion.allowedAnswers) === null || _b === void 0 ? void 0 : _b.includes('*');
         if (lowerCaseMessage &&
