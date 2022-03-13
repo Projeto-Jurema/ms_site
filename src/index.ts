@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import 'newrelic'
 import './telegram'
 import './jobs'
 
