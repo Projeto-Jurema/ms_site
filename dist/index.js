@@ -12,7 +12,7 @@ var cors_1 = __importDefault(require("cors"));
 var routes_1 = __importDefault(require("./routes"));
 var services_1 = require("./services");
 var app = (0, express_1.default)();
-var port = process.env.PORT || 5001;
+var port = process.env.PORT || 3003;
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
 app.use((0, cors_1.default)());

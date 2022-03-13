@@ -42,6 +42,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.chats = void 0;
 var bot_1 = __importDefault(require("../config/bot"));
 var telegramConstants_1 = require("../constants/telegramConstants");
+var delete_1 = require("./delete");
+var listAnimals_1 = require("./listAnimals");
 var newAnimal_1 = __importDefault(require("./newAnimal"));
 var start_1 = __importDefault(require("./start"));
 var _a = process.env, JOAO_CHAT_ID = _a.JOAO_CHAT_ID, MATEUS_CHAT_ID = _a.MATEUS_CHAT_ID, HENRIQUE_CHAT_ID = _a.HENRIQUE_CHAT_ID;
@@ -57,11 +59,15 @@ bot_1.default.on('message', function (msg) { return __awaiter(void 0, void 0, vo
         if (msg.text && /\/start/.test(msg.text))
             return [2 /*return*/, (0, start_1.default)(msg)];
         if (msg.text && /\/cancel/.test(msg.text)) {
-            bot_1.default.sendMessage(msg.chat.id, 'Cadastro de animal cancelado!');
+            bot_1.default.sendMessage(msg.chat.id, telegramConstants_1.texts.canceled);
             return [2 /*return*/, delete exports.chats[chatId]];
         }
         if (msg.text && /\/new/.test(msg.text))
             return [2 /*return*/, (0, newAnimal_1.default)(msg)];
+        if (msg.text && /\/list/.test(msg.text))
+            return [2 /*return*/, (0, listAnimals_1.listAnimals)(msg)];
+        if (msg.text && /\/delete/.test(msg.text))
+            return [2 /*return*/, (0, delete_1.deleteAnimal)(msg)];
         if (exports.chats[msg.chat.id]) {
             form = exports.chats[msg.chat.id];
             return [2 /*return*/, form.saveAnswer(msg)];

@@ -39,60 +39,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var node_cron_1 = __importDefault(require("node-cron"));
-var prisma_1 = __importDefault(require("../config/prisma"));
-var s3_1 = __importDefault(require("../config/s3"));
-var services_1 = require("../services");
-var AWS_S3_BUCKET = process.env.AWS_S3_BUCKET;
-var deleteOldFiles = function (files) {
-    if (!files)
-        return;
-    var oldFiles = files.filter(function (file) {
-        var LastModified = file === null || file === void 0 ? void 0 : file.LastModified;
-        var now = new Date();
-        var difference = now.getTime() - ((LastModified === null || LastModified === void 0 ? void 0 : LastModified.getTime()) || 0);
-        var treeMonthsInMilliseconds = 1000 * 60 * 60 * 24 * 30 * 3;
-        return difference > treeMonthsInMilliseconds;
-    });
-    oldFiles.forEach(function (file) {
-        var Key = file === null || file === void 0 ? void 0 : file.Key;
-        if (!Key)
-            return;
-        s3_1.default.deleteObject({
-            Key: Key,
-            Bucket: AWS_S3_BUCKET,
-        }).promise();
-    });
-};
-var deleteIndexes = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var now, treeMonthsInMilliseconds, threeMonthsAgo;
+exports.listAnimals = void 0;
+var bot_1 = __importDefault(require("../config/bot"));
+var telegramConstants_1 = require("../constants/telegramConstants");
+var animals_1 = require("../services/animals");
+var listAnimals = function (msg) { return __awaiter(void 0, void 0, void 0, function () {
+    var chatId, text, animals, opts;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                now = new Date();
-                treeMonthsInMilliseconds = 1000 * 60 * 60 * 24 * 30 * 3;
-                threeMonthsAgo = new Date(now.getTime() - treeMonthsInMilliseconds);
-                return [4 /*yield*/, prisma_1.default.animals.deleteMany({
-                        where: { createdAt: { lt: threeMonthsAgo } },
-                    })];
+                chatId = msg.chat.id;
+                text = telegramConstants_1.texts.list;
+                return [4 /*yield*/, (0, animals_1.getAnimals)()];
             case 1:
-                _a.sent();
+                animals = _a.sent();
+                opts = {
+                    reply_markup: {
+                        inline_keyboard: [],
+                    },
+                };
+                animals.forEach(function (animal) {
+                    opts.reply_markup.inline_keyboard.push([
+                        {
+                            text: "".concat(animal.id, " - ").concat(animal.name),
+                            url: animal.animalLink,
+                        },
+                    ]);
+                });
+                bot_1.default.sendMessage(chatId, text, opts);
                 return [2 /*return*/];
         }
     });
 }); };
-node_cron_1.default.schedule('0 6 * * *', function () {
-    services_1.logger.info('Running job delete old files');
-    deleteIndexes();
-    var bucketParams = {
-        Bucket: AWS_S3_BUCKET,
-    };
-    s3_1.default.listObjects(bucketParams, function (err, data) {
-        if (err) {
-            services_1.logger.error("Error: ".concat(err));
-        }
-        else {
-            deleteOldFiles(data.Contents);
-        }
-    });
-});
+exports.listAnimals = listAnimals;

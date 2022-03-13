@@ -65,8 +65,9 @@ var upload = function (msg) { return __awaiter(void 0, void 0, void 0, function 
                                 fileBuffer = Buffer.concat(chunks);
                                 params = {
                                     Bucket: AWS_S3_BUCKET,
-                                    Key: "".concat(chatId, "/").concat((_b = (_a = msg.photo) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.file_id, ".png"),
+                                    Key: "".concat(chatId, "/").concat((_b = (_a = msg.photo) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.file_id, ".jpg"),
                                     Body: fileBuffer,
+                                    ACL: 'public-read',
                                 };
                                 return [4 /*yield*/, s3_1.default.upload(params).promise()];
                             case 1:
