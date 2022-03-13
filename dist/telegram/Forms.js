@@ -84,7 +84,7 @@ var Forms = /** @class */ (function () {
                         }); }).filter(function (option) { return option.text !== '*'; });
                         opts = {
                             reply_markup: {
-                                keyboard: [options || []],
+                                inline_keyboard: [options || []],
                             },
                         };
                         bot_1.default.sendMessage(this.msg.chat.id, this.currentQuestion.text, opts);
