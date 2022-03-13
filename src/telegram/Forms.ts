@@ -43,7 +43,10 @@ class Forms {
 
     const opts = {
       reply_markup: {
-        inline_keyboard: [options || []],
+        keyboard: [options || []],
+        one_time_keyboard: true,
+        force_reply: true,
+        resize_keyboard: true,
       },
     }
 
