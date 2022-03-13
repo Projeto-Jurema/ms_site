@@ -51,7 +51,7 @@ var deleteAnimal = function (msg) { return __awaiter(void 0, void 0, void 0, fun
             case 0:
                 chatId = msg.chat.id;
                 params = (_a = msg.text) === null || _a === void 0 ? void 0 : _a.replace(/\/delete/, '').trim();
-                if (!params) {
+                if (!params || isNaN(parseFloat(params))) {
                     return [2 /*return*/, bot_1.default.sendMessage(chatId, telegramConstants_1.texts.nonSpecified)];
                 }
                 return [4 /*yield*/, (0, animals_1.deleteAnimal)(parseFloat(params))];

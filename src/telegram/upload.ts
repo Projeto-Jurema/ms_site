@@ -10,12 +10,14 @@ const { AWS_S3_BUCKET } = process.env
 
 const upload = async (msg: Message): Promise<string> => {
   return new Promise((resolve) => {
-    if (!msg.photo?.[0]?.file_id) return
+    const photo = msg.photo?.[msg.photo.length - 1]
+
+    if (!photo?.file_id) return
 
     const chatId = msg.chat.id
 
     const chunks = [] as Buffer[]
-    const fileStream = bot.getFileStream(msg.photo?.[0]?.file_id)
+    const fileStream = bot.getFileStream(photo?.file_id)
 
     fileStream.once('error', () => {
       bot.sendMessage(chatId, texts.imageError)
@@ -26,7 +28,7 @@ const upload = async (msg: Message): Promise<string> => {
 
       const params = {
         Bucket: AWS_S3_BUCKET as string,
-        Key: `${chatId}/${msg.photo?.[0]?.file_id}.jpg`,
+        Key: `${chatId}/${photo?.file_id}.jpg`,
         Body: fileBuffer,
         ACL: 'public-read',
       }

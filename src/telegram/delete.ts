@@ -7,7 +7,7 @@ export const deleteAnimal = async (msg: Message) => {
   const chatId = msg.chat.id
   const params = msg.text?.replace(/\/delete/, '').trim()
 
-  if (!params) {
+  if (!params || isNaN(parseFloat(params))) {
     return bot.sendMessage(chatId, texts.nonSpecified)
   }
 

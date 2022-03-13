@@ -92,7 +92,7 @@ export const texts = {
   list: 'Lista de animais:',
   deleted: 'Animal deletado!',
   nonSpecified:
-    'Nenhum animal foi especificado, use por exemplo:\n\n/delete 1230',
+    'Nenhum id de animal foi especificado, use por exemplo:\n\n/delete 1230',
   newResponseForms: ({
     name,
     today,

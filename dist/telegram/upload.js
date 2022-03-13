@@ -47,31 +47,31 @@ var AWS_S3_BUCKET = process.env.AWS_S3_BUCKET;
 var upload = function (msg) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         return [2 /*return*/, new Promise(function (resolve) {
-                var _a, _b, _c, _d;
-                if (!((_b = (_a = msg.photo) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.file_id))
+                var _a;
+                var photo = (_a = msg.photo) === null || _a === void 0 ? void 0 : _a[msg.photo.length - 1];
+                if (!(photo === null || photo === void 0 ? void 0 : photo.file_id))
                     return;
                 var chatId = msg.chat.id;
                 var chunks = [];
-                var fileStream = bot_1.default.getFileStream((_d = (_c = msg.photo) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.file_id);
+                var fileStream = bot_1.default.getFileStream(photo === null || photo === void 0 ? void 0 : photo.file_id);
                 fileStream.once('error', function () {
                     bot_1.default.sendMessage(chatId, telegramConstants_1.texts.imageError);
                 });
                 fileStream.once('end', function () { return __awaiter(void 0, void 0, void 0, function () {
                     var fileBuffer, params, data;
-                    var _a, _b;
-                    return __generator(this, function (_c) {
-                        switch (_c.label) {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
                             case 0:
                                 fileBuffer = Buffer.concat(chunks);
                                 params = {
                                     Bucket: AWS_S3_BUCKET,
-                                    Key: "".concat(chatId, "/").concat((_b = (_a = msg.photo) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.file_id, ".jpg"),
+                                    Key: "".concat(chatId, "/").concat(photo === null || photo === void 0 ? void 0 : photo.file_id, ".jpg"),
                                     Body: fileBuffer,
                                     ACL: 'public-read',
                                 };
                                 return [4 /*yield*/, s3_1.default.upload(params).promise()];
                             case 1:
-                                data = _c.sent();
+                                data = _a.sent();
                                 return [2 /*return*/, resolve(data.Location)];
                         }
                     });

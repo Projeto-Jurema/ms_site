@@ -88,7 +88,7 @@ exports.texts = {
     canceled: 'Cadastro de animal cancelado!',
     list: 'Lista de animais:',
     deleted: 'Animal deletado!',
-    nonSpecified: 'Nenhum animal foi especificado, use por exemplo:\n\n/delete 1230',
+    nonSpecified: 'Nenhum id de animal foi especificado, use por exemplo:\n\n/delete 1230',
     newResponseForms: function (_a) {
         var name = _a.name, today = _a.today, about = _a.about, city = _a.city, email = _a.email, phone = _a.phone, animalLink = _a.animalLink;
         return "".concat(name, "\n\nInforma\u00E7\u00F5es do futuro dono\nData do requerimento: ").concat(today, "\nMotivo: ").concat(about, "\nCidade: ").concat(city, "\nEmail: ").concat(email, "\nTelefone: ").concat(phone, "\n\nLink do animal: ").concat(animalLink);
