@@ -38,6 +38,7 @@ class Forms {
     const options = this.currentQuestion.allowedAnswers
       ?.map((option) => ({
         text: option[0].toUpperCase() + option.substring(1),
+        callback_data: option[0].toUpperCase() + option.substring(1),
       }))
       .filter((option) => option.text !== '*')
 

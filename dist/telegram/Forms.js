@@ -81,6 +81,7 @@ var Forms = /** @class */ (function () {
                     case 3:
                         options = (_b = this.currentQuestion.allowedAnswers) === null || _b === void 0 ? void 0 : _b.map(function (option) { return ({
                             text: option[0].toUpperCase() + option.substring(1),
+                            callback_data: option[0].toUpperCase() + option.substring(1),
                         }); }).filter(function (option) { return option.text !== '*'; });
                         opts = {
                             reply_markup: {
