@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,60 +50,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var node_cron_1 = __importDefault(require("node-cron"));
-var prisma_1 = __importDefault(require("../config/prisma"));
-var s3_1 = __importDefault(require("../config/s3"));
-var services_1 = require("../services");
-var AWS_S3_BUCKET = process.env.AWS_S3_BUCKET;
-var deleteOldFiles = function (files) {
-    if (!files)
-        return;
-    var oldFiles = files.filter(function (file) {
-        var LastModified = file === null || file === void 0 ? void 0 : file.LastModified;
-        var now = new Date();
-        var difference = now.getTime() - ((LastModified === null || LastModified === void 0 ? void 0 : LastModified.getTime()) || 0);
-        var treeMonthsInMilliseconds = 1000 * 60 * 60 * 24 * 30 * 3;
-        return difference > treeMonthsInMilliseconds;
-    });
-    oldFiles.forEach(function (file) {
-        var Key = file === null || file === void 0 ? void 0 : file.Key;
-        if (!Key)
-            return;
-        s3_1.default.deleteObject({
-            Key: Key,
-            Bucket: AWS_S3_BUCKET,
-        }).promise();
-    });
-};
-var deleteIndexes = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var now, treeMonthsInMilliseconds, threeMonthsAgo;
+exports.getAnimals = void 0;
+var prisma_1 = __importDefault(require("../../config/prisma"));
+var links_1 = require("../links");
+var getAnimals = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+    var animals;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                now = new Date();
-                treeMonthsInMilliseconds = 1000 * 60 * 60 * 24 * 30 * 3;
-                threeMonthsAgo = new Date(now.getTime() - treeMonthsInMilliseconds);
-                return [4 /*yield*/, prisma_1.default.animals.deleteMany({
-                        where: { createdAt: { lt: threeMonthsAgo } },
-                    })];
+            case 0: return [4 /*yield*/, prisma_1.default.animals.findMany(__assign({}, (url && { where: { animalLink: encodeURI(url) } })))];
             case 1:
-                _a.sent();
-                return [2 /*return*/];
+                animals = _a.sent();
+                return [2 /*return*/, (0, links_1.getAnimalsByLinks)(animals)];
         }
     });
 }); };
-node_cron_1.default.schedule('0 6 * * *', function () {
-    services_1.logger.info('Running job delete old files');
-    deleteIndexes();
-    var bucketParams = {
-        Bucket: AWS_S3_BUCKET,
-    };
-    s3_1.default.listObjects(bucketParams, function (err, data) {
-        if (err) {
-            services_1.logger.error("Error: ".concat(err));
-        }
-        else {
-            deleteOldFiles(data.Contents);
-        }
-    });
-});
+exports.getAnimals = getAnimals;

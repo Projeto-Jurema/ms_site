@@ -26,8 +26,9 @@ const upload = async (msg: Message): Promise<string> => {
 
       const params = {
         Bucket: AWS_S3_BUCKET as string,
-        Key: `${chatId}/${msg.photo?.[0]?.file_id}.png`,
+        Key: `${chatId}/${msg.photo?.[0]?.file_id}.jpg`,
         Body: fileBuffer,
+        ACL: 'public-read',
       }
 
       const data = await S3.upload(params).promise()

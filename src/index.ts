@@ -10,7 +10,7 @@ import routes from './routes'
 import { logger } from './services'
 
 const app = express()
-const port = process.env.PORT || 5001
+const port = process.env.PORT || 3003
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

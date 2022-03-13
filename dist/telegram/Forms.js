@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require(".");
 var bitly_1 = __importDefault(require("../config/bitly"));
 var bot_1 = __importDefault(require("../config/bot"));
+var prisma_1 = __importDefault(require("../config/prisma"));
 var telegramConstants_1 = require("../constants/telegramConstants");
 var upload_1 = __importDefault(require("./upload"));
 var Forms = /** @class */ (function () {
@@ -51,20 +52,33 @@ var Forms = /** @class */ (function () {
         this.msg = msg;
         this.link = link;
     }
+    Forms.prototype.saveInDb = function (_a) {
+        var animalLink = _a.animalLink;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_b) {
+                return [2 /*return*/, prisma_1.default.animals.create({ data: { animalLink: animalLink } })];
+            });
+        });
+    };
     Forms.prototype.sendNextQuestion = function () {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var shortenUrl, options, opts;
+            var animalInstance, shortenUrl, options, opts;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        if (!!((_a = this.currentQuestion) === null || _a === void 0 ? void 0 : _a.text)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, bitly_1.default.shorten(this.link.toString())];
+                        if (!!((_a = this.currentQuestion) === null || _a === void 0 ? void 0 : _a.text)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.saveInDb({
+                                animalLink: encodeURI(this.link.toString()),
+                            })];
                     case 1:
-                        shortenUrl = _c.sent();
-                        bot_1.default.sendMessage(this.msg.chat.id, telegramConstants_1.texts.result(shortenUrl.link));
-                        return [2 /*return*/, delete _1.chats[this.msg.chat.id]];
+                        animalInstance = _c.sent();
+                        return [4 /*yield*/, bitly_1.default.shorten(this.link.toString())];
                     case 2:
+                        shortenUrl = _c.sent();
+                        bot_1.default.sendMessage(this.msg.chat.id, telegramConstants_1.texts.result(shortenUrl.link, animalInstance.id));
+                        return [2 /*return*/, delete _1.chats[this.msg.chat.id]];
+                    case 3:
                         options = (_b = this.currentQuestion.allowedAnswers) === null || _b === void 0 ? void 0 : _b.map(function (option) { return ({
                             text: option[0].toUpperCase() + option.substring(1),
                         }); }).filter(function (option) { return option.text !== '*'; });

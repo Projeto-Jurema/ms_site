@@ -14,7 +14,14 @@ exports.questions = [
         text: 'De que espécie ele é?',
         id: 1,
         query: 'species',
-        allowedAnswers: ['cachorro', 'gato', 'pássaro'],
+        allowedAnswers: [
+            'cachorro',
+            'gato',
+            'pássaro',
+            'equino',
+            'bovino',
+            'animal silvestre',
+        ],
     },
     {
         type: 'text',
@@ -67,7 +74,9 @@ exports.questions = [
 ];
 var _a = process.env, SITE_BASE_URL = _a.SITE_BASE_URL, JOAO_USERNAME = _a.JOAO_USERNAME, MATEUS_USERNAME = _a.MATEUS_USERNAME;
 exports.texts = {
-    result: function (link) { return "Obrigado por responder! Link aqui: ".concat(link); },
+    result: function (link, animalId) {
+        return "Obrigado por responder! Link aqui: ".concat(link, ", com o id: ").concat(animalId);
+    },
     helloCreators: function (firstName) {
         return "Ol\u00E1 ".concat(firstName, ", tudo bem?\n\nPara me usar, voc\u00EA pode executar os seguintes comandos:\n\n/start: reinicia o bot\n/new: adicionar um novo animal ao site\n/cancel: cancela o animal que est\u00E1 sendo adicionado\n/help: tirar d\u00FAvidas do bot\n\nUse com modera\u00E7\u00E3o.");
     },
@@ -76,6 +85,10 @@ exports.texts = {
     unauthorized: "Ol\u00E1, tudo bem?\n\nCaso voc\u00EA queira saber mais sobre n\u00F3s, precisa ir para o site oficial do Projeto Jurema.\n\nBasta clicar no link abaixo\uD83D\uDC47\n\n".concat(SITE_BASE_URL),
     invalid: 'Tipo inválido',
     imageError: 'Erro ao subir imagem',
+    canceled: 'Cadastro de animal cancelado!',
+    list: 'Lista de animais:',
+    deleted: 'Animal deletado!',
+    nonSpecified: 'Nenhum animal foi especificado, use por exemplo:\n\n/delete 1230',
     newResponseForms: function (_a) {
         var name = _a.name, today = _a.today, about = _a.about, city = _a.city, email = _a.email, phone = _a.phone, animalLink = _a.animalLink;
         return "".concat(name, "\n\nInforma\u00E7\u00F5es do futuro dono\nData do requerimento: ").concat(today, "\nMotivo: ").concat(about, "\nCidade: ").concat(city, "\nEmail: ").concat(email, "\nTelefone: ").concat(phone, "\n\nLink do animal: ").concat(animalLink);

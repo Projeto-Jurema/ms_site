@@ -2,7 +2,9 @@ import { Message } from 'node-telegram-bot-api'
 import bot from '../config/bot'
 
 import { texts } from '../constants/telegramConstants'
+import { deleteAnimal } from './delete'
 import Forms from './Forms'
+import { listAnimals } from './listAnimals'
 import newAnimal from './newAnimal'
 import start from './start'
 
@@ -14,6 +16,16 @@ export type Question = {
   id: number
   query: string
   allowedAnswers?: string[]
+}
+
+export interface SendResponseForms {
+  name: string
+  email: string
+  city: string
+  phone: string
+  animalLink: string
+  about: string
+  bot?: any
 }
 
 export const chats = {} as { [chatId: number]: Forms }
@@ -32,12 +44,16 @@ bot.on('message', async (msg: Message) => {
   if (msg.text && /\/start/.test(msg.text)) return start(msg)
 
   if (msg.text && /\/cancel/.test(msg.text)) {
-    bot.sendMessage(msg.chat.id, 'Cadastro de animal cancelado!')
+    bot.sendMessage(msg.chat.id, texts.canceled)
 
     return delete chats[chatId]
   }
 
   if (msg.text && /\/new/.test(msg.text)) return newAnimal(msg)
+
+  if (msg.text && /\/list/.test(msg.text)) return listAnimals(msg)
+
+  if (msg.text && /\/delete/.test(msg.text)) return deleteAnimal(msg)
 
   if (chats[msg.chat.id]) {
     const form = chats[msg.chat.id]
@@ -47,13 +63,3 @@ bot.on('message', async (msg: Message) => {
 
   bot.sendMessage(msg.chat.id, texts.nonChatFound)
 })
-
-export interface SendResponseForms {
-  name: string
-  email: string
-  city: string
-  phone: string
-  animalLink: string
-  about: string
-  bot?: any
-}
