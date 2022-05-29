@@ -7,18 +7,12 @@ const { HENRIQUE_CHAT_ID } = process.env
 
 const sendFormsResponseMessage = async ({
   name,
-  email,
-  city,
-  about,
   animalLink,
   phone,
 }: SendResponseForms) => {
   logger.info(
     `[sendFormsResponseMessage] new interested people ${logger.beautify({
       name,
-      email,
-      city,
-      about,
       animalLink,
       phone,
     })}`
@@ -28,9 +22,6 @@ const sendFormsResponseMessage = async ({
 
   const text = texts.newResponseForms({
     name,
-    email,
-    city,
-    about,
     animalLink,
     phone,
     today,

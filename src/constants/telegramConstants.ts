@@ -1,4 +1,4 @@
-import { Question, SendResponseForms } from '../telegram'
+import { Question } from '../telegram'
 
 export const questions = [
   {
@@ -65,17 +65,27 @@ export const questions = [
     allowedAnswers: ['sim', 'não'],
   },
   {
+    type: 'text',
+    text: 'Escreve uma curta descrição do animal?',
+    id: 8,
+    query: 'description',
+    allowedAnswers: ['*'],
+  },
+  {
     type: 'photo',
     text: 'Mande uma foto do animal para ser exibido no site',
-    id: 8,
+    id: 9,
     query: 'photo',
   },
 ] as Question[]
 
 const { SITE_BASE_URL, JOAO_USERNAME, MATEUS_USERNAME } = process.env
 
-interface ConstantsResponseForms extends SendResponseForms {
+interface ConstantsResponseForms {
   today: string
+  name: string
+  phone: string
+  animalLink: string
 }
 
 export const texts = {
@@ -96,11 +106,8 @@ export const texts = {
   newResponseForms: ({
     name,
     today,
-    about,
-    city,
-    email,
     phone,
     animalLink,
   }: ConstantsResponseForms) =>
-    `${name}\n\nInformações do futuro dono\nData do requerimento: ${today}\nMotivo: ${about}\nCidade: ${city}\nEmail: ${email}\nTelefone: ${phone}\n\nLink do animal: ${animalLink}`,
+    `${name}\n\nInformações do futuro dono\nData do requerimento: ${today}\nTelefone: ${phone}\n\nLink do animal: ${animalLink}`,
 }

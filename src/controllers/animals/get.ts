@@ -4,9 +4,9 @@ import { getAnimals } from '../../services/animals'
 
 async function Get(req: Request, res: Response) {
   try {
-    const { url } = req.query
+    const { id } = req.query
 
-    const animals = typeof url === 'string' || !url ? await getAnimals(url) : []
+    const animals = await getAnimals(id)
 
     return res.status(200).json(animals)
   } catch (err) {

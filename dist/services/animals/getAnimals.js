@@ -53,11 +53,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAnimals = void 0;
 var prisma_1 = __importDefault(require("../../config/prisma"));
 var links_1 = require("../links");
-var getAnimals = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+var getAnimals = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     var animals;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, prisma_1.default.animals.findMany(__assign({}, (url && { where: { animalLink: encodeURI(url) } })))];
+            case 0: return [4 /*yield*/, prisma_1.default.animals.findMany(__assign({}, (typeof id === 'number' && { where: { id: id } })))];
             case 1:
                 animals = _a.sent();
                 return [2 /*return*/, (0, links_1.getAnimalsByLinks)(animals)];

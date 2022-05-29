@@ -41,27 +41,20 @@ var services_1 = require("../../services");
 var animals_1 = require("../../services/animals");
 function Get(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var url, animals, _a, err_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var id, animals, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _b.trys.push([0, 4, , 5]);
-                    url = req.query.url;
-                    if (!(typeof url === 'string' || !url)) return [3 /*break*/, 2];
-                    return [4 /*yield*/, (0, animals_1.getAnimals)(url)];
+                    _a.trys.push([0, 2, , 3]);
+                    id = req.query.id;
+                    return [4 /*yield*/, (0, animals_1.getAnimals)(id)];
                 case 1:
-                    _a = _b.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    _a = [];
-                    _b.label = 3;
-                case 3:
-                    animals = _a;
+                    animals = _a.sent();
                     return [2 /*return*/, res.status(200).json(animals)];
-                case 4:
-                    err_1 = _b.sent();
+                case 2:
+                    err_1 = _a.sent();
                     return [2 /*return*/, (0, services_1.error)({ err: err_1, res: res })];
-                case 5: return [2 /*return*/];
+                case 3: return [2 /*return*/];
             }
         });
     });

@@ -66,9 +66,16 @@ exports.questions = [
         allowedAnswers: ['sim', 'não'],
     },
     {
+        type: 'text',
+        text: 'Escreve uma curta descrição do animal?',
+        id: 8,
+        query: 'description',
+        allowedAnswers: ['*'],
+    },
+    {
         type: 'photo',
         text: 'Mande uma foto do animal para ser exibido no site',
-        id: 8,
+        id: 9,
         query: 'photo',
     },
 ];
@@ -90,7 +97,7 @@ exports.texts = {
     deleted: 'Animal deletado!',
     nonSpecified: 'Nenhum id de animal foi especificado, use por exemplo:\n\n/delete 1230',
     newResponseForms: function (_a) {
-        var name = _a.name, today = _a.today, about = _a.about, city = _a.city, email = _a.email, phone = _a.phone, animalLink = _a.animalLink;
-        return "".concat(name, "\n\nInforma\u00E7\u00F5es do futuro dono\nData do requerimento: ").concat(today, "\nMotivo: ").concat(about, "\nCidade: ").concat(city, "\nEmail: ").concat(email, "\nTelefone: ").concat(phone, "\n\nLink do animal: ").concat(animalLink);
+        var name = _a.name, today = _a.today, phone = _a.phone, animalLink = _a.animalLink;
+        return "".concat(name, "\n\nInforma\u00E7\u00F5es do futuro dono\nData do requerimento: ").concat(today, "\nTelefone: ").concat(phone, "\n\nLink do animal: ").concat(animalLink);
     },
 };

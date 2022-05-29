@@ -44,7 +44,7 @@ var telegramConstants_1 = require("../constants/telegramConstants");
 var services_1 = require("../services");
 var HENRIQUE_CHAT_ID = process.env.HENRIQUE_CHAT_ID;
 var sendFormsResponseMessage = function (_a) {
-    var name = _a.name, email = _a.email, city = _a.city, about = _a.about, animalLink = _a.animalLink, phone = _a.phone;
+    var name = _a.name, animalLink = _a.animalLink, phone = _a.phone;
     return __awaiter(void 0, void 0, void 0, function () {
         var today, text;
         return __generator(this, function (_b) {
@@ -52,18 +52,12 @@ var sendFormsResponseMessage = function (_a) {
                 case 0:
                     services_1.logger.info("[sendFormsResponseMessage] new interested people ".concat(services_1.logger.beautify({
                         name: name,
-                        email: email,
-                        city: city,
-                        about: about,
                         animalLink: animalLink,
                         phone: phone,
                     })));
                     today = new Date().toISOString();
                     text = telegramConstants_1.texts.newResponseForms({
                         name: name,
-                        email: email,
-                        city: city,
-                        about: about,
                         animalLink: animalLink,
                         phone: phone,
                         today: today,
