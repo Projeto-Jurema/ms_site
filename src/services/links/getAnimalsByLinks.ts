@@ -1,8 +1,7 @@
-import { Animals } from '@prisma/client'
-import { ForbiddenError } from 'errors-stack'
+import { Animals, Prisma } from '@prisma/client'
 
 export interface Response {
-  id: number
+  id?: number
   animalLink: string
   name?: string
   species?: string
@@ -15,28 +14,8 @@ export interface Response {
   photo?: string
 }
 
-export const getAnimalsByLinks = (animals: Animals[]): Response[] => {
-  if (!animals.length) return animals
+export const getAnimalsByLinks = (animals: Animals[]): Prisma.JsonValue[] => {
+  if (!animals.length) return []
 
-  if (animals.every(({ animalLink }) => animalLink.includes('bitly'))) {
-    throw new ForbiddenError('It is forbidden to use bitly links')
-  }
-
-  const linksIsNotBitly = animals.filter(
-    ({ animalLink }) => !animalLink.includes('bitly')
-  )
-
-  return linksIsNotBitly.map(({ animalLink, id }) => {
-    const objAnimal = {} as { [key: string]: string }
-
-    const searchParams = new URLSearchParams(
-      new URL(decodeURI(animalLink)).search
-    )
-
-    for (const [key, value] of searchParams.entries()) {
-      objAnimal[key] = value
-    }
-
-    return { ...objAnimal, animalLink, id }
-  })
+  return animals.map((animal) => animal.metadata)
 }

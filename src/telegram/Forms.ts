@@ -1,12 +1,14 @@
 import { Message } from 'node-telegram-bot-api'
 
 import { chats, Question } from '.'
-import bitly from '../config/bitly'
 import bot from '../config/bot'
 import prisma from '../config/prisma'
 import { texts } from '../constants/telegramConstants'
 import { logger } from '../services'
+import { parseLink } from '../services/animals/parseLink'
 import upload from './upload'
+
+const { SITE_BASE_URL } = process.env
 
 class Forms {
   constructor(
@@ -19,23 +21,36 @@ class Forms {
   async saveInDb({ animalLink }: { animalLink: string }) {
     logger.info('[saveInDb] Saving new animal')
 
-    return prisma.animals.create({ data: { animalLink } })
+    const animalInstance = await prisma.animals.create({
+      data: { animalLink },
+    })
+
+    const animalId = animalInstance.id
+
+    const metadata = parseLink({ animalLink, id: animalId })
+
+    const url = `${SITE_BASE_URL}/animal/${animalId}`
+
+    const updatedInstance = await prisma.animals.update({
+      where: { id: animalInstance.id },
+      data: {
+        animalLink: url,
+        metadata: JSON.stringify(metadata),
+      },
+    })
+
+    return { url, updatedInstance }
   }
 
   async sendNextQuestion() {
     logger.info(`[sendNextQuestion][${logger.beautify(this.currentQuestion)}]`)
 
     if (!this.currentQuestion?.text) {
-      const animalInstance = await this.saveInDb({
+      const { url, updatedInstance } = await this.saveInDb({
         animalLink: encodeURI(this.link.toString()),
       })
 
-      const shortenUrl = await bitly.shorten(this.link.toString())
-
-      bot.sendMessage(
-        this.msg.chat.id,
-        texts.result(shortenUrl.link, animalInstance.id)
-      )
+      bot.sendMessage(this.msg.chat.id, texts.result(url, updatedInstance.id))
 
       return delete chats[this.msg.chat.id]
     }
