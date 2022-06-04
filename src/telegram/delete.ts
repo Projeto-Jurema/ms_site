@@ -14,7 +14,13 @@ export const deleteAnimal = async (msg: Message) => {
     return bot.sendMessage(chatId, texts.nonSpecified)
   }
 
-  await deleteAnimalById(parseFloat(params))
+  try {
+    await deleteAnimalById(parseFloat(params))
+  } catch (error) {
+    logger.error(error)
+
+    return bot.sendMessage(chatId, texts.errorOnDelete)
+  }
 
   bot.sendMessage(chatId, texts.deleted)
 }

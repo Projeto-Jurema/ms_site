@@ -103,6 +103,7 @@ interface ConstantsResponseForms {
 }
 
 export const texts = {
+  errorOnDelete: 'Ocorreu um erro ao deletar o animal',
   result: (link: string, animalId: number) =>
     `Obrigado por responder! Link aqui: ${link}, com o id: ${animalId}`,
   helloCreators: (firstName: string) =>
