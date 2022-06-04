@@ -38,20 +38,6 @@ export const questions = [
   },
   {
     type: 'text',
-    text: 'Possui FIV Felina?',
-    id: 10,
-    query: 'fiv',
-    allowedAnswers: ['sim', 'não', 'não aplicável'],
-  },
-  {
-    type: 'text',
-    text: 'Possui FeLV Felina?',
-    id: 10,
-    query: 'felv',
-    allowedAnswers: ['sim', 'não', 'não aplicável'],
-  },
-  {
-    type: 'text',
     text: 'Qual seu porte?',
     id: 4,
     query: 'size',
@@ -80,15 +66,29 @@ export const questions = [
   },
   {
     type: 'text',
-    text: 'Escreve uma curta descrição do animal?',
+    text: 'Escreva uma curta descrição do animal',
     id: 8,
     query: 'description',
     allowedAnswers: ['*'],
   },
   {
+    type: 'text',
+    text: 'Possui FIV Felina?',
+    id: 9,
+    query: 'fiv',
+    allowedAnswers: ['sim', 'não', 'não aplicável'],
+  },
+  {
+    type: 'text',
+    text: 'Possui FeLV Felina?',
+    id: 10,
+    query: 'felv',
+    allowedAnswers: ['sim', 'não', 'não aplicável'],
+  },
+  {
     type: 'photo',
     text: 'Mande uma foto do animal para ser exibido no site',
-    id: 9,
+    id: 11,
     query: 'photo',
   },
 ] as Question[]
