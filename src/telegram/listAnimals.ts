@@ -4,6 +4,8 @@ import { texts } from '../constants/telegramConstants'
 import { logger } from '../services'
 import { getAnimals } from '../services/animals'
 
+const { SITE_BASE_URL } = process.env
+
 export const listAnimals = async (msg: Message) => {
   logger.info(`[${msg.chat.id}][${msg.text}] List animals`)
 
@@ -21,12 +23,10 @@ export const listAnimals = async (msg: Message) => {
   logger.info(animals)
 
   animals.forEach((animal) => {
-    logger.info(animal)
-
     opts.reply_markup.inline_keyboard.push([
       {
         text: `${animal?.id} - ${animal?.name}`,
-        url: animal?.animalLink,
+        url: `${SITE_BASE_URL}/animal/${animal?.id}`,
       },
     ])
   })
