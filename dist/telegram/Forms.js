@@ -40,12 +40,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require(".");
-var bitly_1 = __importDefault(require("../config/bitly"));
 var bot_1 = __importDefault(require("../config/bot"));
 var prisma_1 = __importDefault(require("../config/prisma"));
 var telegramConstants_1 = require("../constants/telegramConstants");
 var services_1 = require("../services");
+var parseLink_1 = require("../services/animals/parseLink");
 var upload_1 = __importDefault(require("./upload"));
+var SITE_BASE_URL = process.env.SITE_BASE_URL;
 var Forms = /** @class */ (function () {
     function Forms(questions, currentQuestion, msg, link) {
         this.questions = questions;
@@ -56,32 +57,50 @@ var Forms = /** @class */ (function () {
     Forms.prototype.saveInDb = function (_a) {
         var animalLink = _a.animalLink;
         return __awaiter(this, void 0, void 0, function () {
+            var animalInstance, animalId, metadata, url, updatedInstance;
             return __generator(this, function (_b) {
-                services_1.logger.info('[saveInDb] Saving new animal');
-                return [2 /*return*/, prisma_1.default.animals.create({ data: { animalLink: animalLink } })];
+                switch (_b.label) {
+                    case 0:
+                        services_1.logger.info('[saveInDb] Saving new animal');
+                        return [4 /*yield*/, prisma_1.default.animals.create({
+                                data: { animalLink: animalLink },
+                            })];
+                    case 1:
+                        animalInstance = _b.sent();
+                        animalId = animalInstance.id;
+                        metadata = (0, parseLink_1.parseLink)({ animalLink: animalLink, id: animalId });
+                        url = "".concat(SITE_BASE_URL, "/animal/").concat(animalId);
+                        return [4 /*yield*/, prisma_1.default.animals.update({
+                                where: { id: animalInstance.id },
+                                data: {
+                                    animalLink: url,
+                                    metadata: JSON.stringify(metadata),
+                                },
+                            })];
+                    case 2:
+                        updatedInstance = _b.sent();
+                        return [2 /*return*/, { url: url, updatedInstance: updatedInstance }];
+                }
             });
         });
     };
     Forms.prototype.sendNextQuestion = function () {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var animalInstance, shortenUrl, options, opts;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var _c, url, updatedInstance, options, opts;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         services_1.logger.info("[sendNextQuestion][".concat(services_1.logger.beautify(this.currentQuestion), "]"));
-                        if (!!((_a = this.currentQuestion) === null || _a === void 0 ? void 0 : _a.text)) return [3 /*break*/, 3];
+                        if (!!((_a = this.currentQuestion) === null || _a === void 0 ? void 0 : _a.text)) return [3 /*break*/, 2];
                         return [4 /*yield*/, this.saveInDb({
                                 animalLink: encodeURI(this.link.toString()),
                             })];
                     case 1:
-                        animalInstance = _c.sent();
-                        return [4 /*yield*/, bitly_1.default.shorten(this.link.toString())];
-                    case 2:
-                        shortenUrl = _c.sent();
-                        bot_1.default.sendMessage(this.msg.chat.id, telegramConstants_1.texts.result(shortenUrl.link, animalInstance.id));
+                        _c = _d.sent(), url = _c.url, updatedInstance = _c.updatedInstance;
+                        bot_1.default.sendMessage(this.msg.chat.id, telegramConstants_1.texts.result(url, updatedInstance.id));
                         return [2 /*return*/, delete _1.chats[this.msg.chat.id]];
-                    case 3:
+                    case 2:
                         options = (_b = this.currentQuestion.allowedAnswers) === null || _b === void 0 ? void 0 : _b.map(function (option) { return ({
                             text: option[0].toUpperCase() + option.substring(1),
                             callback_data: option[0].toUpperCase() + option.substring(1),

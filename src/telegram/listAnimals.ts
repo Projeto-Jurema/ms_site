@@ -21,8 +21,8 @@ export const listAnimals = async (msg: Message) => {
   animals.forEach((animal) => {
     opts.reply_markup.inline_keyboard.push([
       {
-        text: `${animal.id} - ${animal.name}`,
-        url: animal.animalLink,
+        text: `${animal?.id} - ${animal?.name}`,
+        url: animal?.animalLink,
       },
     ])
   })

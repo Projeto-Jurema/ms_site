@@ -35,7 +35,21 @@ exports.questions = [
         text: 'Qual o sexo dele?',
         id: 3,
         query: 'sex',
-        allowedAnswers: ['macho', 'femea'],
+        allowedAnswers: ['macho', 'fêmea'],
+    },
+    {
+        type: 'text',
+        text: 'Possui FIV Felina?',
+        id: 10,
+        query: 'fiv',
+        allowedAnswers: ['Sim', 'Não', 'Não aplicável'],
+    },
+    {
+        type: 'text',
+        text: 'Possui FeLV Felina?',
+        id: 10,
+        query: 'felv',
+        allowedAnswers: ['Sim', 'Não', 'Não aplicável'],
     },
     {
         type: 'text',

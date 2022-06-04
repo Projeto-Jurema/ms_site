@@ -63,8 +63,8 @@ var listAnimals = function (msg) { return __awaiter(void 0, void 0, void 0, func
                 animals.forEach(function (animal) {
                     opts.reply_markup.inline_keyboard.push([
                         {
-                            text: "".concat(animal.id, " - ").concat(animal.name),
-                            url: animal.animalLink,
+                            text: "".concat(animal === null || animal === void 0 ? void 0 : animal.id, " - ").concat(animal === null || animal === void 0 ? void 0 : animal.name),
+                            url: animal === null || animal === void 0 ? void 0 : animal.animalLink,
                         },
                     ]);
                 });
