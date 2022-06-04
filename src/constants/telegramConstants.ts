@@ -41,14 +41,14 @@ export const questions = [
     text: 'Possui FIV Felina?',
     id: 10,
     query: 'fiv',
-    allowedAnswers: ['Sim', 'Não', 'Não aplicável'],
+    allowedAnswers: ['sim', 'não', 'não aplicável'],
   },
   {
     type: 'text',
     text: 'Possui FeLV Felina?',
     id: 10,
     query: 'felv',
-    allowedAnswers: ['Sim', 'Não', 'Não aplicável'],
+    allowedAnswers: ['sim', 'não', 'não aplicável'],
   },
   {
     type: 'text',
