@@ -18,7 +18,11 @@ export const listAnimals = async (msg: Message) => {
     },
   }
 
+  logger.info(animals)
+
   animals.forEach((animal) => {
+    logger.info(animal)
+
     opts.reply_markup.inline_keyboard.push([
       {
         text: `${animal?.id} - ${animal?.name}`,

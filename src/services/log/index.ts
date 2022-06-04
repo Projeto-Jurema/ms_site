@@ -1,9 +1,9 @@
 export const logger = {
-  error: (data: string) => console.error(data),
+  error: (data: any) => console.error(data),
 
-  info: (data: string) => console.log(data),
+  info: (data: any) => console.log(data),
 
-  warn: (data: string) => console.warn(data),
+  warn: (data: any) => console.warn(data),
 
   beautify: (data: any) => JSON.stringify(data, null, 2),
 }
