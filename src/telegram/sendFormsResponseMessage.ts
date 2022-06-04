@@ -1,9 +1,8 @@
 import { SendResponseForms } from '.'
 import bot from '../config/bot'
+import prisma from '../config/prisma'
 import { texts } from '../constants/telegramConstants'
 import { logger } from '../services'
-
-const { HENRIQUE_CHAT_ID } = process.env
 
 const sendFormsResponseMessage = async ({
   name,
@@ -27,7 +26,15 @@ const sendFormsResponseMessage = async ({
     today,
   })
 
-  await bot.sendMessage(HENRIQUE_CHAT_ID as string, text)
+  const employeesToReceiveMessage = await prisma.employees.findMany({
+    where: { receiveAdoptionMessage: true },
+  })
+
+  await Promise.all(
+    employeesToReceiveMessage.map(async (employee) =>
+      bot.sendMessage(employee.TelegramId, text)
+    )
+  )
 }
 
 export default sendFormsResponseMessage

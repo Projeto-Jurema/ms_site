@@ -8,9 +8,16 @@ datasource db {
 }
 
 model Animals {
-  id         Int      @id @default(autoincrement())
-  animalLink String   @unique @db.VarChar(1052)
-  createdAt  DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt  DateTime @default(now()) @updatedAt @db.Timestamptz(6)
-  metadata   Json?    @db.Json
+  id         Int       @id @default(autoincrement())
+  animalLink String?   @db.VarChar(1052)
+  createdAt  DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt  DateTime? @default(now()) @updatedAt @db.Timestamp(6)
+  metadata   Json?     @db.Json
+}
+
+model Employees {
+  id                     Int      @id @default(autoincrement())
+  name                   String   @db.VarChar(30)
+  TelegramId             String   @db.VarChar(30)
+  receiveAdoptionMessage Boolean? @default(false)
 }

@@ -106,7 +106,7 @@ export const texts = {
   errorOnDelete: 'Ocorreu um erro ao deletar o animal',
   result: (link: string, animalId: number) =>
     `Obrigado por responder! Link aqui: ${link}, com o id: ${animalId}`,
-  helloCreators: (firstName: string) =>
+  helloEmployees: (firstName: string) =>
     `Olá ${firstName}, tudo bem?\n\nPara me usar, você pode executar os seguintes comandos:\n\n/start: reinicia o bot\n/new: adicionar um novo animal ao site\n/cancel: cancela o animal que está sendo adicionado\n/help: tirar dúvidas do bot\n\nUse com moderação.`,
   helloHenrique: `Olá Henrique, tudo bem?\n\nEu sou o bot do Projeto Jurema e por aqui você poderá adicionar novos animais ao nosso site.\n\nPara me usar, você pode executar os seguintes comandos:\n\n/start: reinicia o bot\n/new: adicionar um novo animal ao site\n/cancel: cancela o animal que está sendo adicionado\n/help: tirar dúvidas do bot\n\nSe você tiver alguma dúvida, pode dizer para o ${MATEUS_USERNAME} ou para o ${JOAO_USERNAME}`,
   nonChatFound: `Não entendi o que você quis dizer 🤨\n\nSe estiver tentando adicionar um novo animal ao site, digite /new.\n\nEm caso de dúvidas, você também pode falar com o ${JOAO_USERNAME} ou com o ${MATEUS_USERNAME}`,

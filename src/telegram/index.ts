@@ -1,5 +1,6 @@
 import { Message } from 'node-telegram-bot-api'
 import bot from '../config/bot'
+import prisma from '../config/prisma'
 
 import { texts } from '../constants/telegramConstants'
 import { logger } from '../services'
@@ -8,8 +9,6 @@ import Forms from './Forms'
 import { listAnimals } from './listAnimals'
 import newAnimal from './newAnimal'
 import start from './start'
-
-const { JOAO_CHAT_ID, MATEUS_CHAT_ID, HENRIQUE_CHAT_ID } = process.env
 
 export type Question = {
   type: 'text' | 'photo'
@@ -36,11 +35,10 @@ bot.on('message', async (msg: Message) => {
 
   logger.info(`[${chatId}][${msg.text}] Received message`)
 
-  if (
-    ![JOAO_CHAT_ID, MATEUS_CHAT_ID, HENRIQUE_CHAT_ID].includes(
-      msg.chat.id.toString?.()
-    )
-  ) {
+  const allEmployees = await prisma.employees.findMany()
+  const employeesIds = allEmployees.map((employee) => employee.TelegramId)
+
+  if (!employeesIds.includes(msg.chat.id.toString?.())) {
     logger.warn(`[${chatId}][${msg.text}] Unauthorized chat`)
 
     return bot.sendMessage(chatId, texts.unauthorized)
